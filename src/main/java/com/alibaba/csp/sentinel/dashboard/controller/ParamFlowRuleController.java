@@ -91,6 +91,9 @@ public class ParamFlowRuleController {
         if (!checkIfSupported(app, ip, port)) {
             return unsupportedVersion();
         }
+        if (!appManagement.isValidMachineOfApp(app, ip)) {
+            return Result.ofFail(-1, "given ip does not belong to given app");
+        }
         try {
             if (persistentApiClient == null) {
                 return sentinelApiClient.fetchParamFlowRulesOfMachine(app, ip, port)

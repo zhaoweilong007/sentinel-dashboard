@@ -20,6 +20,7 @@ import com.alibaba.csp.sentinel.dashboard.auth.AuthService.PrivilegeType;
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
 import com.alibaba.csp.sentinel.dashboard.datasource.RuleConfigTypeEnum;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.DegradeRuleEntity;
+import com.alibaba.csp.sentinel.dashboard.discovery.AppManagement;
 import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
 import com.alibaba.csp.sentinel.dashboard.domain.Result;
 import com.alibaba.csp.sentinel.dashboard.repository.rule.RuleRepository;
@@ -54,7 +55,8 @@ public class DegradeController {
     private SentinelApiClient sentinelApiClient;
     @Autowired(required = false)
     private PersistentRuleApiClient<DegradeRuleEntity> persistentApiClient;
-
+    @Autowired
+    private AppManagement appManagement;
 
     @GetMapping("/rules.json")
     @AuthAction(PrivilegeType.READ_RULE)
@@ -67,6 +69,9 @@ public class DegradeController {
         }
         if (port == null) {
             return Result.ofFail(-1, "port can't be null");
+        }
+        if (!appManagement.isValidMachineOfApp(app, ip)) {
+            return Result.ofFail(-1, "given ip does not belong to given app");
         }
         try {
             List<DegradeRuleEntity> rules = new ArrayList<DegradeRuleEntity>();

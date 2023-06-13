@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8615a70-ac6e-49aa-865e-02653a0aa15b" name="Changes" comment="" />
+    <list default="true" id="b8615a70-ac6e-49aa-865e-02653a0aa15b" name="Changes" comment="适配sentinel1.8.6">
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/client/SentinelApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/client/SentinelApiClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/controller/AuthorityRuleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/controller/AuthorityRuleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/controller/DegradeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/controller/DegradeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/controller/FlowControllerV1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/controller/FlowControllerV1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/controller/ParamFlowRuleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/controller/ParamFlowRuleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/controller/SystemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/controller/SystemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/discovery/AppInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/discovery/AppInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/discovery/AppManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/discovery/AppManagement.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,13 +29,12 @@
     <option name="showExcludedFiles" value="false" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/datasource/ds/apollo" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "master",
+    "nodejs_package_manager_path": "npm"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/com/alibaba/csp/sentinel/dashboard/datasource/ds/apollo" />
@@ -55,5 +67,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="add gitignore" />
   </component>
 </project>

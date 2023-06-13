@@ -20,6 +20,7 @@ import com.alibaba.csp.sentinel.dashboard.auth.AuthService.PrivilegeType;
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
 import com.alibaba.csp.sentinel.dashboard.datasource.RuleConfigTypeEnum;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.AuthorityRuleEntity;
+import com.alibaba.csp.sentinel.dashboard.discovery.AppManagement;
 import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
 import com.alibaba.csp.sentinel.dashboard.domain.Result;
 import com.alibaba.csp.sentinel.dashboard.repository.rule.RuleRepository;
@@ -51,7 +52,8 @@ public class AuthorityRuleController {
     private RuleRepository<AuthorityRuleEntity, Long> repository;
     @Autowired(required = false)
     private PersistentRuleApiClient<AuthorityRuleEntity> persistentApiClient;
-
+    @Autowired
+    private AppManagement appManagement;
 
     @GetMapping("/rules")
     @AuthAction(PrivilegeType.READ_RULE)
@@ -66,6 +68,9 @@ public class AuthorityRuleController {
         }
         if (port == null || port <= 0) {
             return Result.ofFail(-1, "Invalid parameter: port");
+        }
+        if (!appManagement.isValidMachineOfApp(app, ip)) {
+            return Result.ofFail(-1, "given ip does not belong to given app");
         }
         try {
             List<AuthorityRuleEntity> rules = new ArrayList<AuthorityRuleEntity>();

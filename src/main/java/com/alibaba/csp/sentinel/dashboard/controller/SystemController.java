@@ -20,6 +20,7 @@ import com.alibaba.csp.sentinel.dashboard.auth.AuthService.PrivilegeType;
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
 import com.alibaba.csp.sentinel.dashboard.datasource.RuleConfigTypeEnum;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.SystemRuleEntity;
+import com.alibaba.csp.sentinel.dashboard.discovery.AppManagement;
 import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
 import com.alibaba.csp.sentinel.dashboard.domain.Result;
 import com.alibaba.csp.sentinel.dashboard.repository.rule.RuleRepository;
@@ -51,7 +52,8 @@ public class SystemController {
     private SentinelApiClient sentinelApiClient;
     @Autowired(required = false)
     private PersistentRuleApiClient<SystemRuleEntity> persistentApiClient;
-
+    @Autowired
+    private AppManagement appManagement;
     private <R> Result<R> checkBasicParams(String app, String ip, Integer port) {
         if (StringUtil.isEmpty(app)) {
             return Result.ofFail(-1, "app can't be null or empty");
@@ -64,6 +66,9 @@ public class SystemController {
         }
         if (port <= 0 || port > 65535) {
             return Result.ofFail(-1, "port should be in (0, 65535)");
+        }
+        if (!appManagement.isValidMachineOfApp(app, ip)) {
+            return Result.ofFail(-1, "given ip does not belong to given app");
         }
         return null;
     }

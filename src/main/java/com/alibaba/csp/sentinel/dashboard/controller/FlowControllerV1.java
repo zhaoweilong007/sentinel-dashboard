@@ -20,6 +20,7 @@ import com.alibaba.csp.sentinel.dashboard.auth.AuthService.PrivilegeType;
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
 import com.alibaba.csp.sentinel.dashboard.datasource.RuleConfigTypeEnum;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
+import com.alibaba.csp.sentinel.dashboard.discovery.AppManagement;
 import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
 import com.alibaba.csp.sentinel.dashboard.domain.Result;
 import com.alibaba.csp.sentinel.dashboard.repository.rule.InMemoryRuleRepositoryAdapter;
@@ -58,6 +59,8 @@ public class FlowControllerV1 {
     @Autowired(required = false)
     private PersistentRuleApiClient<FlowRuleEntity> persistentApiClient;
 
+    @Autowired
+    private AppManagement appManagement;
 
     @GetMapping("/rules")
     @AuthAction(PrivilegeType.READ_RULE)
@@ -73,6 +76,9 @@ public class FlowControllerV1 {
         }
         if (port == null) {
             return Result.ofFail(-1, "port can't be null");
+        }
+        if (!appManagement.isValidMachineOfApp(app, ip)) {
+            return Result.ofFail(-1, "given ip does not belong to given app");
         }
         try {
             List<FlowRuleEntity> rules = new ArrayList<FlowRuleEntity>();
