@@ -120,99 +120,80 @@ spring:
 
 如果使用基于内存的方式这样就完成了。
 
-要想实现持久化配置，这里还是以zookeeper为例，需要引入对应依赖
+要想实现持久化配置，这里还是以nacos为例，需要引入对应依赖
 
-```xml
-<!--引入zookeeper-->
-<dependency>
-  <groupId>org.apache.zookeeper</groupId>
-  <artifactId>zookeeper</artifactId>
-  <version>3.4.14</version>
-  <exclusions>
-    <exclusion>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-    </exclusion>
-    <exclusion>
-      <artifactId>slf4j-api</artifactId>
-      <groupId>org.slf4j</groupId>
-    </exclusion>
-    <exclusion>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-    </exclusion>
-  </exclusions>
-</dependency>
-<!--使用zookeeper作为sentinel的持久化选择，接入push模式的sentinel-->
-<dependency>
-  <groupId>com.alibaba.csp</groupId>
-  <artifactId>sentinel-datasource-zookeeper</artifactId>
-  <version>1.8.5</version>
-  <exclusions>
-    <exclusion>
-      <artifactId>zookeeper</artifactId>
-      <groupId>org.apache.zookeeper</groupId>
-    </exclusion>
-  </exclusions>
-</dependency>
-<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-<dependency>
-  <groupId>org.apache.commons</groupId>
-  <artifactId>commons-lang3</artifactId>
-  <version>3.12.0</version>
-</dependency>
+```groovy
+        api('com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel')
+        api 'com.alibaba.csp:sentinel-datasource-nacos'
 ```
 
 然后增加对应的配置
 
 ```yml
-# 这里定义了一个全局变量，为zookeeper的地址，请填写为您真是的地址
-myurl:
-  zk: 192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181
-
 spring:
   cloud:
     sentinel:
+      eager: true  #是否开启网关限流，默认true
+      transport:
+        # 添加sentinel的控制台地址
+        dashboard: 127.0.0.1:8088
+        #指定应用与Sentinel控制台交互的端口，应用本地会起一个该端口占用的HttpServer
+        port: 8719
+      web-context-unify: false # 默认将调用链路收敛，导致链路流控效果无效
+      # 持久化配置
       datasource:
         #流控规则
         flow:
-          zk:
-            server-addr: ${myurl.zk}
-            groupId: sentinel_rule_config/${spring.application.name}
-            dataId: flow-rules
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr:localhost:8848}
+            username: ${spring.cloud.nacos.username:nacos}
+            password: ${spring.cloud.nacos.username:nacos}
+            groupId: SENTINEL_GROUP
+            dataId: sentinel_rule_config-${spring.application.name}-flow-rules
             # 规则类型，取值见：
             # org.springframework.cloud.alibaba.sentinel.datasource.RuleType
             rule-type: flow
         #熔断降级
         degrade:
-          zk:
-            server-addr: ${myurl.zk}
-            groupId: sentinel_rule_config/${spring.application.name}
-            dataId: degrade-rules
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr:localhost:8848}
+            username: ${spring.cloud.nacos.username:nacos}
+            password: ${spring.cloud.nacos.username:nacos}
+            groupId: SENTINEL_GROUP
+            dataId: sentinel_rule_config-${spring.application.name}-degrade-rules
             rule-type: degrade
         #系统规则
         system:
-          zk:
-            server-addr: ${myurl.zk}
-            groupId: sentinel_rule_config/${spring.application.name}
-            dataId: system-rules
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr:localhost:8848}
+            username: ${spring.cloud.nacos.username:nacos}
+            password: ${spring.cloud.nacos.username:nacos}
+            groupId: SENTINEL_GROUP
+            dataId: sentinel_rule_config-${spring.application.name}-system-rules
             rule-type: system
         #授权规则
         authority:
-          zk:
-            server-addr: ${myurl.zk}
-            groupId: sentinel_rule_config/${spring.application.name}
-            dataId: authority-rules
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr:localhost:8848}
+            username: ${spring.cloud.nacos.username:nacos}
+            password: ${spring.cloud.nacos.username:nacos}
+            groupId: SENTINEL_GROUP
+            dataId: sentinel_rule_config-${spring.application.name}-authority-rules
             rule-type: authority
         #参数规则
         param-flow:
-          zk:
-            server-addr: ${myurl.zk}
-            groupId: sentinel_rule_config/${spring.application.name}
-            dataId: param-rules
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr:localhost:8848}
+            username: ${spring.cloud.nacos.username:nacos}
+            password: ${spring.cloud.nacos.username:nacos}
+            groupId: SENTINEL_GROUP
+            dataId: sentinel_rule_config-${spring.application.name}-param-rules
             rule-type: param-flow
-
 ```
+
+>dataId 为固定格式：sentinel_rule_config-服务名-规则名
+
+- 规则名详情请看：com.alibaba.csp.sentinel.dashboard.datasource.RuleConfigTypeEnum 
 
 更多接入方式可以参考官方文档：[主流框架的适配](https://github.com/alibaba/Sentinel/wiki/%E4%B8%BB%E6%B5%81%E6%A1%86%E6%9E%B6%E7%9A%84%E9%80%82%E9%85%8D#spring-cloud)
 
