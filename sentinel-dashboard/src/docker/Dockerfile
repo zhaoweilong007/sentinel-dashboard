@@ -8,7 +8,7 @@ RUN mkdir -p /sentinel
 
 WORKDIR /sentinel
 
-ADD ./target/sentinel-dashboard.jar ./app-${VERSION}.jar
+ADD ../../target/sentinel-dashboard.jar ./app-${VERSION}.jar
 
 # 设置时区，默认为UTC
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
