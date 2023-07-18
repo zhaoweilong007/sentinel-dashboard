@@ -4,7 +4,7 @@ import com.alibaba.csp.sentinel.dashboard.datasource.RuleConfigTypeEnum;
 import com.alibaba.csp.sentinel.dashboard.rule.AbstractpersistentRuleApiClient;
 import com.alibaba.csp.sentinel.util.AssertUtil;
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;

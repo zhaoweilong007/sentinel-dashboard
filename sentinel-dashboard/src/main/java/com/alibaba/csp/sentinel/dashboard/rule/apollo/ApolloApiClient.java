@@ -11,7 +11,7 @@ import com.ctrip.framework.apollo.openapi.client.ApolloOpenApiClient;
 import com.ctrip.framework.apollo.openapi.dto.NamespaceReleaseDTO;
 import com.ctrip.framework.apollo.openapi.dto.OpenItemDTO;
 import com.ctrip.framework.apollo.openapi.dto.OpenNamespaceDTO;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;

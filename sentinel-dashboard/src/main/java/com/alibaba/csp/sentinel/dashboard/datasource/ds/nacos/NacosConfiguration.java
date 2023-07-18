@@ -19,7 +19,7 @@ import com.alibaba.csp.sentinel.dashboard.datasource.ds.DataSourceProperties;
 import com.alibaba.nacos.api.PropertyKeyConst;
 import com.alibaba.nacos.api.config.ConfigFactory;
 import com.alibaba.nacos.api.config.ConfigService;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;

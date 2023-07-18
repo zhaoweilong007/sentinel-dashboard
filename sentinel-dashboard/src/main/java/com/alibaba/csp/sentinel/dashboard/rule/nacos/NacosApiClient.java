@@ -7,7 +7,7 @@ import com.alibaba.csp.sentinel.util.AssertUtil;
 import com.alibaba.csp.sentinel.util.StringUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.config.ConfigService;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class NacosApiClient<T> extends AbstractpersistentRuleApiClient<T> {
         String ruleName = this.getRuleConfigId(app, configType);
         String groupId = nacosProperties.getGroupId();
         String rulesJson = JSON.toJSONString(rules,true);
-        configService.publishConfig(ruleName, groupId, rulesJson);
+        configService.publishConfig(ruleName, groupId, rulesJson,"json");
     }
 
 }
