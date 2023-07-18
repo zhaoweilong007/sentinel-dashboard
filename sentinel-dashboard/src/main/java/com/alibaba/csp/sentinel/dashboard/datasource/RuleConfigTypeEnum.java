@@ -1,5 +1,6 @@
 package com.alibaba.csp.sentinel.dashboard.datasource;
 
+import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.ApiDefinitionEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.GatewayFlowRuleEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.GatewayParamFlowItemEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.rule.*;
@@ -19,6 +20,7 @@ public enum RuleConfigTypeEnum {
     AUTHORITY("authority-rules", AuthorityRuleEntity.class),
     DEGRADE("degrade-rules", DegradeRuleEntity.class),
     SYSTEM("system-rules", SystemRuleEntity.class),
+    GATEWAY_API("gateway-api-group", ApiDefinitionEntity.class),
     GATEWAY_FLOW("gateway-flow-rules", GatewayFlowRuleEntity.class),
     GATEWAY_PARAM_FLOW("gateway-param-flow-rules", GatewayParamFlowItemEntity.class);
 

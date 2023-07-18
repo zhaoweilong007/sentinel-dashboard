@@ -18,6 +18,7 @@ package com.alibaba.csp.sentinel.dashboard.controller.gateway;
 import com.alibaba.csp.sentinel.dashboard.auth.AuthAction;
 import com.alibaba.csp.sentinel.dashboard.auth.AuthService;
 import com.alibaba.csp.sentinel.dashboard.client.SentinelApiClient;
+import com.alibaba.csp.sentinel.dashboard.datasource.RuleConfigTypeEnum;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.ApiDefinitionEntity;
 import com.alibaba.csp.sentinel.dashboard.datasource.entity.gateway.ApiPredicateItemEntity;
 import com.alibaba.csp.sentinel.dashboard.discovery.MachineInfo;
@@ -26,6 +27,7 @@ import com.alibaba.csp.sentinel.dashboard.domain.vo.gateway.api.AddApiReqVo;
 import com.alibaba.csp.sentinel.dashboard.domain.vo.gateway.api.ApiPredicateItemVo;
 import com.alibaba.csp.sentinel.dashboard.domain.vo.gateway.api.UpdateApiReqVo;
 import com.alibaba.csp.sentinel.dashboard.repository.gateway.InMemApiDefinitionStore;
+import com.alibaba.csp.sentinel.dashboard.rule.PersistentRuleApiClient;
 import com.alibaba.csp.sentinel.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +58,9 @@ public class GatewayApiController {
     @Autowired
     private SentinelApiClient sentinelApiClient;
 
+    @Autowired(required = false)
+    private PersistentRuleApiClient<ApiDefinitionEntity> persistentApiClient;
+
     @GetMapping("/list.json")
     @AuthAction(AuthService.PrivilegeType.READ_RULE)
     public Result<List<ApiDefinitionEntity>> queryApis(String app, String ip, Integer port) {
@@ -71,7 +76,12 @@ public class GatewayApiController {
         }
 
         try {
-            List<ApiDefinitionEntity> apis = sentinelApiClient.fetchApis(app, ip, port).get();
+            List<ApiDefinitionEntity> apis;
+            if (persistentApiClient == null) {
+                apis = sentinelApiClient.fetchApis(app, ip, port).get();
+            } else {
+                apis = persistentApiClient.fetch(app, RuleConfigTypeEnum.GATEWAY_API);
+            }
             repository.saveAll(apis);
             return Result.ofSuccess(apis);
         } catch (Throwable throwable) {
@@ -141,7 +151,7 @@ public class GatewayApiController {
 
         // 检查API名称不能重复
         List<ApiDefinitionEntity> allApis = repository.findAllByMachine(MachineInfo.of(app.trim(), ip.trim(), port));
-        if (allApis.stream().map(o -> o.getApiName()).anyMatch(o -> o.equals(apiName.trim()))) {
+        if (allApis.stream().map(ApiDefinitionEntity::getApiName).anyMatch(o -> o.equals(apiName.trim()))) {
             return Result.ofFail(-1, "apiName exists: " + apiName);
         }
 
@@ -253,8 +263,21 @@ public class GatewayApiController {
         return Result.ofSuccess(id);
     }
 
+    /**
+     * 推送到nacos
+     *
+     * @param app appName
+     */
     private boolean publishApis(String app, String ip, Integer port) {
-        List<ApiDefinitionEntity> apis = repository.findAllByMachine(MachineInfo.of(app, ip, port));
+        List<ApiDefinitionEntity> apis = repository.findAllByApp(app);
+        if (persistentApiClient != null) {
+            try {
+                persistentApiClient.publish(app, RuleConfigTypeEnum.GATEWAY_API, apis);
+            } catch (Exception e) {
+                logger.error("推送到nacos异常:{}", e.getMessage());
+            }
+        }
         return sentinelApiClient.modifyApis(app, ip, port, apis);
     }
+
 }
